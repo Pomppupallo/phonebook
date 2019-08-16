@@ -22,7 +22,7 @@ app.get('/info', (request, response) => {
     const info = (`Phonebook has info for ${persons.length} people`)
     response.write(`<h1>${info}</h1>`)
     response.write(date)
-    response.send()
+    response.sendStatus(200)
 })
 
 app.get('/api/persons', (request, response) => {
@@ -32,14 +32,19 @@ app.get('/api/persons', (request, response) => {
 app.get('/api/persons/:id', (request, response) => {
     const id = Number(request.params.id)
     const person = persons.find(p => p.id === id)
-    console.log(id);
-    console.log(person);
     
     if (person) {
         response.send(person)
     } else {
-        response.send(404).end()
+        response.sendStatus(404)
     }
+})
+
+app.delete('/api/persons/:id', (request, response) => {
+    const id = Number(request.params.id)
+    persons = persons.filter(p => p.id !== id)
+
+    response.sendStatus(204)
 })
 
 const PORT = 3001
