@@ -17,15 +17,19 @@ let persons = [
     }
 ]
 
-app.get('/', (req, res) => {
-  res.send('<h1>Hello World!</h1>')
+app.get('/info', (request, response) => {
+    const date = new Date().toString()
+    const info = (`Phonebook has info for ${persons.length} people`)
+    response.write(`<h1>${info}</h1>`)
+    response.write(date)
+    response.send()
 })
 
 app.get('/api/persons', (request, response) => {
-  response.json(persons)
+    response.json(persons)
 })
 
 const PORT = 3001
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`)
+    app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`)
 })
