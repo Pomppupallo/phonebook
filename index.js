@@ -1,8 +1,10 @@
 const express = require('express')
 const app = express()
 const bodyParser = require('body-parser')
+const morgan = require('morgan')
 
 app.use(bodyParser.json())
+app.use(morgan('tiny'))
 
 let persons = [
     {
@@ -66,6 +68,14 @@ app.post('/api/persons', (request, response) => {
     if(body.content === null) {
         return response.status(400).json({
             error: 'content missing'
+        })
+    }
+
+    const checkSameName = persons.find(p => p.name === body.name)
+
+    if (checkSameName) {
+        return response.status(300).json({
+            error: 'name is already in database -> name must be unique'
         })
     }
 
