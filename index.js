@@ -22,7 +22,7 @@ app.get('/info', (request, response) => {
     const info = (`Phonebook has info for ${persons.length} people`)
     response.write(`<h1>${info}</h1>`)
     response.write(date)
-    response.sendStatus(200)
+    response.status(200).end()
 })
 
 app.get('/api/persons', (request, response) => {
@@ -36,7 +36,7 @@ app.get('/api/persons/:id', (request, response) => {
     if (person) {
         response.send(person)
     } else {
-        response.sendStatus(404)
+        response.status(404).end()
     }
 })
 
@@ -44,7 +44,42 @@ app.delete('/api/persons/:id', (request, response) => {
     const id = Number(request.params.id)
     persons = persons.filter(p => p.id !== id)
 
-    response.sendStatus(204)
+    response.status(204).end()
+})
+
+app.post('/api/persons', (request, response) => {
+    const body = request.body
+    console.log(body);
+    // Name information is not included
+    if (!body.name) {
+        return response.status(400).json({
+            error: 'Name is missing'
+        })
+    }
+    // Number information is not included
+    if(!body.number) {
+        return response.status(400).json({
+            error: 'Number is missing'
+        })
+    }
+
+    if(body.content === null) {
+        return response.status(400).json({
+            error: 'content missing'
+        })
+    }
+
+    const newID = Math.floor(Math.random()*100)
+
+    const person = {
+        name: body.name,
+        number: body.number,
+        id: newID
+    }
+
+    persons = persons.concat(person)
+    console.log(person);
+    response.json(person)
 })
 
 const PORT = 3001

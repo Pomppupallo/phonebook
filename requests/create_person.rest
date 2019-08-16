@@ -1,8 +1,7 @@
 post http://localhost:3001/api/persons/
 Content-Type: application/json
 
-{
-    "name": "Toni Virtanen",
-    "number": "050-4130965",
-    "id": 10
-}
+    {
+        "name": "Toni Virtanen",
+        "number": "050-4130965"
+    }
